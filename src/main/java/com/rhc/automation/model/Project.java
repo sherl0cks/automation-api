@@ -24,7 +24,7 @@ public class Project   {
   /**
    * Gets or Sets environmentType
    */
-  public enum EnvironmentTypeEnum {
+  public enum gitEnvironmentTypeEnum {
     BUILD("build"),
     
     PROMOTION("promotion");
