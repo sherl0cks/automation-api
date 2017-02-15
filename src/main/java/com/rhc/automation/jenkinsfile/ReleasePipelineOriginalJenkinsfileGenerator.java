@@ -15,6 +15,7 @@
 
 package com.rhc.automation.jenkinsfile;
 
+import com.rhc.automation.exception.InvalidEngagementException;
 import com.rhc.automation.model.Application;
 import com.rhc.automation.model.Engagement;
 import com.rhc.automation.model.OpenShiftCluster;
@@ -39,7 +40,7 @@ public class ReleasePipelineOriginalJenkinsfileGenerator implements ReleasePipel
     }
 
     @Override
-    public String generateBuildAppStage( final Engagement engagement, final String applicationName ) {
+    public String generateBuildAppStage( final Engagement engagement, final String applicationName ) throws InvalidEngagementException {
         StringBuilder script = new StringBuilder();
         Application app = engagement.getApplicationFromBuildProject( applicationName );
 

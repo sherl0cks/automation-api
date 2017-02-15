@@ -15,6 +15,7 @@
 
 package com.rhc.automation.jenkinsfile;
 
+import com.rhc.automation.exception.InvalidEngagementException;
 import com.rhc.automation.model.Engagement;
 
 public interface ReleasePipelineDialectSpecificGenerator {
@@ -22,7 +23,7 @@ public interface ReleasePipelineDialectSpecificGenerator {
 
     String generateCodeCheckoutStage( final Engagement engagement, final String applicationName );
 
-    String generateBuildAppStage( final Engagement engagement, final String applicationName );
+    String generateBuildAppStage( final Engagement engagement, final String applicationName ) throws InvalidEngagementException;
 
     String generateBuildImageAndDeployToDevStage( final Engagement engagement, final String applicationName );
 

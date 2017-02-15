@@ -1,5 +1,7 @@
 package com.rhc.automation.jenkinsfile;
 
+import com.rhc.automation.exception.ApplicationNotFoundException;
+import com.rhc.automation.exception.InvalidEngagementException;
 import com.rhc.automation.model.Engagement;
 import com.rhc.automation.utils.ObjectMother;
 import com.rhc.automation.utils.TestUtils;
@@ -11,7 +13,7 @@ import java.io.IOException;
 public class ReleasePipelineDeclarativeJenkinsfileGeneratorTest {
 
     @Test
-    public void shouldCorrectlyCreateSingleClusterMultiProjectS2IBuild() throws IOException {
+    public void shouldCorrectlyCreateSingleClusterMultiProjectS2IBuild() throws IOException, ApplicationNotFoundException, InvalidEngagementException {
         // given
         Engagement engagement = ObjectMother.getEngagementFromJsonFile( TestUtils.S2I_BUILD_FILE );
 
@@ -24,7 +26,7 @@ public class ReleasePipelineDeclarativeJenkinsfileGeneratorTest {
     }
 
     @Test
-    public void shouldCorrectlyCreateSingleClusterMultiProjectScriptWithMvn() throws IOException {
+    public void shouldCorrectlyCreateSingleClusterMultiProjectScriptWithMvn() throws IOException, ApplicationNotFoundException, InvalidEngagementException {
         // given
         Engagement engagement = ObjectMother.getEngagementFromJsonFile( TestUtils.MVN_BUILD_FILE );
 

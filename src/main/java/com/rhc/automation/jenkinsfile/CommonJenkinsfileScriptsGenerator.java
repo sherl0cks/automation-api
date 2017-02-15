@@ -15,11 +15,13 @@
 
 package com.rhc.automation.jenkinsfile;
 
+import com.rhc.automation.exception.InvalidEngagementException;
 import com.rhc.automation.model.Application;
 import com.rhc.automation.model.Engagement;
 import com.rhc.automation.model.OpenShiftCluster;
 import com.rhc.automation.model.Project;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class CommonJenkinsfileScriptsGenerator {
@@ -28,7 +30,7 @@ public class CommonJenkinsfileScriptsGenerator {
         return "checkout scm";
     }
 
-    public static String createBuildAppScript( final Application app ) {
+    public static String createBuildAppScript( final Application app ) throws InvalidEngagementException {
         StringBuilder script = new StringBuilder();
         if ( app.getContextDir() == null || app.getContextDir().isEmpty() ) {
             script.append( createBuildCommands( app ) );
@@ -87,15 +89,15 @@ public class CommonJenkinsfileScriptsGenerator {
         return script.toString();
     }
 
-    public static String createBuildCommands( final Application app ) {
+    public static String createBuildCommands( final Application app ) throws InvalidEngagementException {
         StringBuilder script = new StringBuilder();
 
         if ( GeneratorConstants.SUPPORTED_BUILD_TOOLS.contains( app.getBuildTool() ) ) {
             script.append( "    echo 'Using build tool: " ).append( app.getBuildTool() ).append( "'\n" );
             script.append( createListOfShellCommandsScript( app, app.getBuildTool() ) );
         } else {
-            throw new RuntimeException(
-                    app.getBuildTool() + " is currently unsupported. Please select one of " + GeneratorConstants.SUPPORTED_BUILD_TOOLS );
+            throw new InvalidEngagementException( Arrays.asList(
+                    app.getBuildTool() + " is currently unsupported. Please select one of " + GeneratorConstants.SUPPORTED_BUILD_TOOLS ) );
         }
 
         return script.toString();

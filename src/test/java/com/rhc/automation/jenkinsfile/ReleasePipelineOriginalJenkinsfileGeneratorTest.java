@@ -15,6 +15,8 @@
  */
 package com.rhc.automation.jenkinsfile;
 
+import com.rhc.automation.exception.ApplicationNotFoundException;
+import com.rhc.automation.exception.InvalidEngagementException;
 import com.rhc.automation.model.Engagement;
 import com.rhc.automation.utils.ObjectMother;
 import com.rhc.automation.utils.TestUtils;
@@ -33,7 +35,7 @@ public class ReleasePipelineOriginalJenkinsfileGeneratorTest {
 
 
     @Test
-    public void shouldCorrectlyCreateSingleClusterMultiProjectS2IBuild() throws IOException {
+    public void shouldCorrectlyCreateSingleClusterMultiProjectS2IBuild() throws IOException, ApplicationNotFoundException, InvalidEngagementException {
         // given
         Engagement engagement = ObjectMother.getEngagementFromJsonFile( TestUtils.S2I_BUILD_FILE );
 
@@ -45,7 +47,7 @@ public class ReleasePipelineOriginalJenkinsfileGeneratorTest {
     }
 
     @Test
-    public void shouldCorrectlyCreateSingleClusterMultiProjectScriptWithCustomBuildImageAndCustomDeployCommands() throws IOException {
+    public void shouldCorrectlyCreateSingleClusterMultiProjectScriptWithCustomBuildImageAndCustomDeployCommands() throws IOException, ApplicationNotFoundException, InvalidEngagementException {
         // given
         Engagement engagement = ObjectMother.getEngagementFromJsonFile( TestUtils.CUSTOM_BUILD_IMAGE_FILE );
 
@@ -57,7 +59,7 @@ public class ReleasePipelineOriginalJenkinsfileGeneratorTest {
     }
 
     @Test
-    public void shouldCorrectlyCreateSingleClusterMultiProjectScriptWithMvn() throws IOException {
+    public void shouldCorrectlyCreateSingleClusterMultiProjectScriptWithMvn() throws IOException, ApplicationNotFoundException, InvalidEngagementException {
         // given
         Engagement engagement = ObjectMother.getEngagementFromJsonFile( TestUtils.MVN_BUILD_FILE );
 
@@ -70,7 +72,7 @@ public class ReleasePipelineOriginalJenkinsfileGeneratorTest {
 
 
     @Test
-    public void shouldCorrectlyCreateSingleClusterMultiProjectScriptWithFabric8() throws IOException {
+    public void shouldCorrectlyCreateSingleClusterMultiProjectScriptWithFabric8() throws IOException, ApplicationNotFoundException, InvalidEngagementException {
         // given
         Engagement engagement = ObjectMother.getEngagementFromJsonFile( TestUtils.FABRIC8_BUILD_FILE );
 
@@ -83,7 +85,7 @@ public class ReleasePipelineOriginalJenkinsfileGeneratorTest {
 
 
     @Test
-    public void shouldCorrectlyCreateAutomationApi() throws IOException {
+    public void shouldCorrectlyCreateAutomationApi() throws IOException, ApplicationNotFoundException, InvalidEngagementException {
         // given
         Engagement engagement = ObjectMother.getEngagementFromJsonFile( TestUtils.LABS_ENV_FILE );
 
@@ -96,7 +98,7 @@ public class ReleasePipelineOriginalJenkinsfileGeneratorTest {
 
 
     @Test
-    public void shouldThrowExceptionForUnsupportedBuildTool() throws IOException {
+    public void shouldThrowExceptionForUnsupportedBuildTool() throws IOException, ApplicationNotFoundException {
         // given
         Engagement engagement = ObjectMother.getEngagementFromJsonFile( TestUtils.UNSUPPORTED_BUILD_TOOL_FILE );
 
@@ -104,7 +106,7 @@ public class ReleasePipelineOriginalJenkinsfileGeneratorTest {
         try {
             ReleasePipelineGenerator.generate( engagement, TestUtils.APPLICATION_NAME );
             Assert.fail( "did not throw error" );
-        } catch ( RuntimeException e ) {
+        } catch ( InvalidEngagementException e ) {
             // then
             if ( e.getMessage() != null && e.getMessage().contains( "gradle-3 is currently unsupported" ) ) {
                 // do nothing, this is desired behavior
@@ -115,7 +117,7 @@ public class ReleasePipelineOriginalJenkinsfileGeneratorTest {
     }
 
     @Test
-    public void shouldThrowExceptionForNoBuildTool() throws IOException {
+    public void shouldThrowExceptionForNoBuildTool() throws IOException, ApplicationNotFoundException {
         // given
         Engagement engagement = ObjectMother.getEngagementFromJsonFile( TestUtils.NO_BUILD_TOOL_FILE );
 
@@ -123,7 +125,7 @@ public class ReleasePipelineOriginalJenkinsfileGeneratorTest {
         try {
             ReleasePipelineGenerator.generate( engagement, TestUtils.APPLICATION_NAME );
             Assert.fail( "did not throw error" );
-        } catch ( RuntimeException e ) {
+        } catch ( InvalidEngagementException e ) {
             // then
             if ( e.getMessage() != null && e.getMessage().contains( "A build tool must be set" ) ) {
                 // do nothing, this is desired behavior

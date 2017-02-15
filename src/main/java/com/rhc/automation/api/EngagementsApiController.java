@@ -1,5 +1,6 @@
 package com.rhc.automation.api;
 
+import com.rhc.automation.exception.ApplicationNotFoundException;
 import com.rhc.automation.exception.EngagementNotFoundException;
 import com.rhc.automation.exception.InvalidEngagementException;
 import com.rhc.automation.jenkinsfile.PipelineDialect;
@@ -90,7 +91,7 @@ public class EngagementsApiController implements EngagementsApi {
             @PathVariable( "id" ) Long id,
             @RequestParam( value = "applicationName", required = true ) String applicationName,
             @RequestParam( value = "declarative", required = false, defaultValue = "false" ) Boolean declarative
-    ) throws EngagementNotFoundException {
+    ) throws EngagementNotFoundException, ApplicationNotFoundException, InvalidEngagementException {
 
         Engagement engagement = engagementRepository.findById( id );
         String jenkinsfile;
@@ -118,6 +119,11 @@ public class EngagementsApiController implements EngagementsApi {
 
     @ExceptionHandler( { EngagementNotFoundException.class } )
     public ResponseEntity<ErrorModel> handleEngagementNotFoundException( EngagementNotFoundException e ) {
+        return new ResponseEntity<ErrorModel>( new ErrorModel().code( 404 ).message( e.getMessage() ), HttpStatus.NOT_FOUND );
+    }
+
+    @ExceptionHandler( { ApplicationNotFoundException.class } )
+    public ResponseEntity<ErrorModel> handleApplicationNotFoundException( ApplicationNotFoundException e ) {
         return new ResponseEntity<ErrorModel>( new ErrorModel().code( 404 ).message( e.getMessage() ), HttpStatus.NOT_FOUND );
     }
 
